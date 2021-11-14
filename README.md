@@ -6,10 +6,15 @@
 
 ## Introduction:
 
-The cyclomatic complexity is equal to the num of decision point plus one.
+- python 3.10 required
+
+- The cyclomatic complexity is equal to the num of decision point plus one.
 This package use two steps to calculate it:
-1. generates ast from the source code with the help of tree-sitter
-2. walks the ast and counts the num of decesion points
+    1. generates ast from the source code with the help of tree-sitter
+    2. walks the ast and counts the num of decesion points
+
+## Examples:
+
 
 ## Concepts:
 
