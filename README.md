@@ -4,7 +4,7 @@
 2. generate ast from source code with the help of tree-sitter
 3. support the calculation in parallel when the target is a directory
 
-## Introduction
+## Introduction:
 
 The cyclomatic complexity is equal to the num of decision point plus one.
 This package use two steps to calculate it:
