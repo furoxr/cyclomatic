@@ -20,7 +20,7 @@ class PyCalculator(TreeSitterNodeVisitor):
         'else_clause',
         'while_statement',
         'for_statement',
-        'except_statement'
+        'except_clause'
     )
 
     def __init__(self):
