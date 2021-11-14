@@ -7,7 +7,9 @@
 
 ## Installation
 
-`pip install git+https://github.com/furoxr/cyclomatic.git`
+```
+pip install git+https://github.com/furoxr/cyclomatic.git
+```
 
 ## Examples:
 ```
