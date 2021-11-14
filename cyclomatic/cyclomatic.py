@@ -35,28 +35,28 @@ def cyclomatic_singly(target: Union[str, bytes], language=None) -> Optional[Bloc
             return calculate(tree.root_node, language=language)
 
 
-def cyclomatic_in_batch(dir_path: str, language=None, in_parallel=True, ignore=True) -> Dict[str, Block]:
+def cyclomatic_in_batch(dir_path: str, language=None, ignore=True) -> Dict[str, Block]:
     """get the cyclomatic complexity list of the source files in the directory
 
     :param dir_path: directory path
     :param language: language label, must in the config.LANGUAGE_MAPPING
-    :param in_parallel: if run in parallel
     :param ignore: ignore files can not be dealt with
     :return:
     """
-    if in_parallel:
-        # todo
-        pass
-    else:
-        result = {}
-        for file in pathlib.Path(dir_path).iterdir():
-            _logger.info(f'processing file: {file}')
-            try:
-                block = cyclomatic_singly(str(file), language=language)
-                result[str(file)] = block
-            except FileNotFoundError:
-                if not ignore:
-                    raise
-                else:
-                    _logger.info(f'ignore {file}')
-        return result
+    result = {}
+    for file in pathlib.Path(dir_path).iterdir():
+        _logger.info(f'processing file: {file}')
+        if file.is_dir():
+            sub_res = cyclomatic_in_batch(dir_path=str(file))
+            result.update(sub_res)
+        try:
+            block = cyclomatic_singly(str(file), language=language)
+            result[str(file)] = block
+        except FileNotFoundError:
+            if not ignore:
+                raise
+            else:
+                _logger.info(f'ignore {file}')
+        except NotImplementedError:
+            _logger.info(f'skip(not implemented for {file.suffix}) {file}')
+    return result
