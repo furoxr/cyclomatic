@@ -54,7 +54,7 @@ def cyclomatic_in_batch(dir_path: str, language=None, ignore=True) -> Dict[str, 
     :param dir_path: directory path
     :param language: language label, must in the config.LANGUAGE_MAPPING
     :param ignore: ignore files can not be dealt with
-    :return:
+    :return: Dict with path string as key, with Block as value
     """
     result = {}
     dir_path = pathlib.Path(dir_path)
@@ -78,8 +78,9 @@ def cyclomatic_in_batch(dir_path: str, language=None, ignore=True) -> Dict[str, 
 
 
 def cyclomatic_in_parallel(dir_path, worker_num=None) -> Dict[str, Optional[Block]]:
-    """work in parallel
+    """work in parallel, not optimized.
 
+    This function is more efficient only when the target directory contains more than dozens of modules.
     :param dir_path: target directory path str
     :param worker_num: num of real executors. By default, there will be workers with the same number of CPU cores.
     :return: a dict with file path as key, and with Block as value
