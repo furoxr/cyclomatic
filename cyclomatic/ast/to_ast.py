@@ -1,19 +1,10 @@
 import pathlib
-import cyclomatic
 from tree_sitter import (Language, Parser, Tree)
+from cyclomatic.config import package_path, LANGUAGE_MAPPING
 
-
-package_path = pathlib.Path(cyclomatic.__file__).parent
-
-# currently supported parser
-# Key is the language label.
-# Value is the path to the tree-sitter grammar repo and the language name in tree-sitter
-_tree_sitter = {
-    'py': (package_path / 'ast' / 'tree-sitter-python', 'python')
-}
 
 SO_PATH = str(package_path / 'ast' / 'tree_sitter_binding.so')
-Language.build_library(SO_PATH, [str(s[0]) for s in _tree_sitter.values()])
+Language.build_library(SO_PATH, [str(s[0]) for s in LANGUAGE_MAPPING.values()])
 
 
 def to_ast(*, source: bytes = None, path: str = None, language=None) -> Tree:
@@ -31,7 +22,7 @@ def to_ast(*, source: bytes = None, path: str = None, language=None) -> Tree:
             suffix = path.suffix[1:]
             language = suffix
 
-        if language not in _tree_sitter:
+        if language not in LANGUAGE_MAPPING:
             raise NotImplementedError(path.suffix[1:])
 
         with open(path, 'rb') as f:
@@ -46,7 +37,7 @@ def to_ast(*, source: bytes = None, path: str = None, language=None) -> Tree:
             "to_ast(source=b'def fun():\n    return 0')\n"
         )
 
-    tree_sitter_lang = Language(SO_PATH, _tree_sitter[language][1])
+    tree_sitter_lang = Language(SO_PATH, LANGUAGE_MAPPING[language][1])
     parser = Parser()
     parser.set_language(tree_sitter_lang)
     return parser.parse(source)
