@@ -1,5 +1,5 @@
 ## Feature:
-> python >= 3.7 is required
+> python 3.10.0 is required
 1. calculate cyclomatic complexity of a program (python)
 2. generate ast from source code with the help of tree-sitter
 3. support the calculation in parallel when the target is a directory

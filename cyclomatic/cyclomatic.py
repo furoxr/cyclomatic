@@ -23,22 +23,19 @@ def cyclomatic_singly(target: Union[str, bytes], language=None) -> Optional[Bloc
     This function will speculate the language according to the file suffix, but if source code provieded,
     language type should be explicitly given.
     """
-    if isinstance(target, str):
-        path = target
-        path_o = pathlib.Path(path)
-        if path_o.is_file():
-            tree, language = to_ast(path=path, language=language)
-            if tree:
-                block = calculate(tree.root_node, language=language)
-                return block
-        else:
-            raise FileNotFoundError(path)
-    elif isinstance(target, bytes):
-        source = target
-        tree, language = to_ast(source=source, language=language)
-        return calculate(tree.root_node, language=language)
-
-    raise Exception('Wrong args')
+    match target:
+        case str(path):
+            path_o = pathlib.Path(path)
+            if path_o.is_file():
+                tree, language = to_ast(path=path, language=language)
+                if tree:
+                    block = calculate(tree.root_node, language=language)
+                    return block
+            else:
+                raise FileNotFoundError(path)
+        case bytes(source):
+            tree, language = to_ast(source=source, language=language)
+            return calculate(tree.root_node, language=language)
 
 
 def cyclomatic_safely(path: str, language=None) -> Tuple[str, Optional[Block]]:
